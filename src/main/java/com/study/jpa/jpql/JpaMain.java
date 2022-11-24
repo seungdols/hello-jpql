@@ -21,12 +21,15 @@ public class JpaMain {
             for (int i = 0; i < 100; i++) {
                 Member member = new Member();
                 member.setUsername("member" + i);
-                member.setAge(i + i * 2);
+                member.setAge(i);
                 em.persist(member);
             }
 
+            em.flush();
+            em.clear();
+
             List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
-                                        .setFirstResult(10)
+                                        .setFirstResult(1)
                                         .setMaxResults(10)
                                         .getResultList();
 
