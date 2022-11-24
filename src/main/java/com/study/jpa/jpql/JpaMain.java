@@ -17,12 +17,22 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setUsername("seungdols");
-            em.persist(member);
 
-            TypedQuery<Member> select_m_from_member_m = em.createQuery("select m from Member m", Member.class);
-            Query query = em.createQuery("select m.username, m.age from Member m");
+            for (int i = 0; i < 100; i++) {
+                Member member = new Member();
+                member.setUsername("member" + i);
+                member.setAge(i + i * 2);
+                em.persist(member);
+            }
+
+            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
+                                        .setFirstResult(10)
+                                        .setMaxResults(10)
+                                        .getResultList();
+
+            for (Member findMember : resultList) {
+                System.out.println("findMember: " + findMember.getUsername() + " " + findMember.getAge());
+            }
 
             tx.commit();
         } catch (Exception e) {
