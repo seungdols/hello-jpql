@@ -1,10 +1,8 @@
 package com.study.jpa.jpql;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import org.hibernate.annotations.Fetch;
+
+import javax.persistence.*;
 
 @Entity
 public class Member {
@@ -13,7 +11,7 @@ public class Member {
     private Long id;
     private String username;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
