@@ -1,6 +1,7 @@
 package com.study.jpa.jpql;
 
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -47,17 +48,13 @@ public class JpaMain {
 
             em.flush();
             em.clear();
-//            String query = "select t from Team t join fetch t.members";
-//            List<Team> resultList = em.createQuery(query, Team.class)
-//                                      .getResultList();
-//
-//            for (Team team : resultList) {
-//                System.out.println("team = " + team.getName() + ", " + team.getMembers().size());
-//            }
 
-            String query = "select distinct t from Team t join fetch t.members";
+            String query = "select t from Team t join fetch t.members";
+            // WARN: HHH000104: firstResult/maxResults specified with collection fetch; applying in memory!
             List<Team> resultList = em.createQuery(query, Team.class)
-                    .getResultList();
+                                      .setFirstResult(0)
+                                      .setMaxResults(1)
+                                      .getResultList();
 
             for (Team team : resultList) {
                 System.out.println("team.name = " + team.getName() + ", team=" + team);
